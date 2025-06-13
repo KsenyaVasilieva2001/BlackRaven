@@ -6,14 +6,33 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour, IInventory
 {
-    public IReadOnlyList<IInventorySlot> Slots => _slots;
-    private readonly List<IInventorySlot> _slots;
+    public static Inventory Instance { get; private set; }
+    [SerializeField] private GameObject inventoryPanel; 
+    public List<InventorySlot> Slots => slots;
+    [SerializeField] private List<InventorySlot> slots;
     public event Action OnInventoryChanged;
-    public event Action OnInventoryChangsed;
+    void Awake()
+    {
+        Instance = this;
+    }
+
+    void Start()
+    {
+        InventorySlot[] foundSlots = transform.parent.GetComponentsInChildren<InventorySlot>(includeInactive: true);
+        slots.AddRange(foundSlots);
+    }
+
+    public List<InventorySlot> FindAllSlotsInChildren(Transform parent)
+    {
+        List<InventorySlot> slots = new List<InventorySlot>();
+        InventorySlot[] foundSlots = parent.GetComponentsInChildren<InventorySlot>(includeInactive: true);
+        slots.AddRange(foundSlots);
+        return slots;
+    }
 
     public bool TryAdd(Item item)
     {
-        var slot = _slots.FirstOrDefault(s => s.IsEmpty && s.StoredItem == null);
+        var slot = slots.FirstOrDefault(s => s.IsEmpty && s.StoredItem == null);
         if (slot == null) return false;
         slot.AddItem(item);
         OnInventoryChanged?.Invoke();
@@ -22,9 +41,15 @@ public class Inventory : MonoBehaviour, IInventory
 
     public Item TryRemoveAt(int index)
     {
-        if (index < 0 || index >= _slots.Count) return null;
-        var removed = _slots[index].RemoveItem();
+        if (index < 0 || index >= slots.Count) return null;
+        var removed = slots[index].RemoveItem();
         if (removed != null) OnInventoryChanged?.Invoke();
         return removed;
+    }
+
+    public void ShowOrHideInventory()
+    {
+        Debug.Log("Show");
+        inventoryPanel.SetActive(!inventoryPanel.active);
     }
 }

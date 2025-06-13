@@ -5,8 +5,7 @@ using UnityEngine;
 
 public interface IInventory
 {
-    IReadOnlyList<IInventorySlot> Slots { get; }
-    event Action OnInventoryChangsed;
+    event Action OnInventoryChanged;
     bool TryAdd(Item item);
     Item TryRemoveAt(int slotIndex);
 }

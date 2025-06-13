@@ -1,20 +1,93 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour, IInventorySlot
+public class InventorySlot : MonoBehaviour, IInventorySlot, IPointerClickHandler
 {
-    public bool IsEmpty => _item == null;
+    [SerializeField] private Image iconImage;
+    //[SerializeField] private Image backgroundImage;
+
+    public static event Action<InventorySlot> OnAnySlotSelected;
+    public static event Action<Item> OnItemSelected;
+    public bool IsEmpty => item == null;
 
     public ItemType requiredItemType;
-    public Item StoredItem => _item;
-    private Item _item;
+    public Item StoredItem => item;
+    private Item item;
+    private bool isSelected = false;
 
-    public void AddItem(Item item) => _item = item;
+    void Start()
+    {
+        iconImage = GetComponent<Image>();
+    }
+    private void OnEnable()
+    {
+        OnAnySlotSelected += HandleOtherSlotSelected;
+    }
+
+    private void OnDisable()
+    {
+        OnAnySlotSelected -= HandleOtherSlotSelected;
+    }
+
+    public void AddItem(Item item)
+    {
+        this.item = item;
+        UpdateUI();
+    }
+    
+    private void UpdateUI()
+    {
+        if (item != null)
+        {
+            iconImage.sprite = item.Icon;
+            iconImage.enabled = true;
+        }
+        else
+        {
+            iconImage.sprite = null;
+            iconImage.enabled = false;
+        }
+    }
     public Item RemoveItem()
     {
-        var tmp = _item;
-        _item = null;
+        var tmp = item;
+        item = null;
+        UpdateSelectionVisual();
+        UpdateUI();
         return tmp;
+    }
+
+    public Item ChooseItem()
+    {
+        if (item == null) return null;
+        isSelected = true;
+        UpdateSelectionVisual();
+        OnAnySlotSelected?.Invoke(this); 
+        OnItemSelected?.Invoke(item);
+
+        return item;
+    }
+
+    private void HandleOtherSlotSelected(InventorySlot selectedSlot)
+    {
+        if (selectedSlot != this)
+        {
+            isSelected = false;
+            UpdateSelectionVisual();
+        }
+    }
+
+    private void UpdateSelectionVisual()
+    {
+
+        iconImage.color = isSelected ? new Color(17, 255, 0) : Color.white;
+    }
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        ChooseItem();
     }
 }

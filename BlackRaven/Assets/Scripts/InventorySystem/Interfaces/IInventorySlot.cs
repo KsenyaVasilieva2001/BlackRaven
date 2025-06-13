@@ -8,4 +8,6 @@ public interface IInventorySlot
     Item StoredItem { get; }
     void AddItem(Item item);
     Item RemoveItem();
+
+    Item ChooseItem();
 }

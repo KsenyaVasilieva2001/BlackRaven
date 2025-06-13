@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
 public class PlayerItemInteractor : MonoBehaviour
 {
     [SerializeField] private float interactDistance = 3f;
@@ -30,3 +31,4 @@ public class PlayerItemInteractor : MonoBehaviour
         }
     }
 }
+*/

@@ -22,5 +22,5 @@ public class CameraSwitch : MonoBehaviour
         otherCamera.enabled = !isPlayerCameraActive;
     }
 
-    //добавить затемнение или другой эффект
+    //добавить затемнение или другой эффект, переход по времени
 }

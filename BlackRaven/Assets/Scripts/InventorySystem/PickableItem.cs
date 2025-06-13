@@ -10,12 +10,35 @@ public class PickableItem : MonoBehaviour
     public bool _isPlayerInRange;
     [SerializeField] private Inventory inventory;
 
-    public void Interact()
+
+    private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Player"))
+        {
+            _isPlayerInRange = true;
+            InputManager.Instance.OnInteractKeyPressed += TryPickup;
+            //UI_Prompt.Show("Нажмите [E], чтобы подобрать " + itemData.name);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            _isPlayerInRange = false;
+            InputManager.Instance.OnInteractKeyPressed -= TryPickup;
+            //UI_Prompt.Hide();
+        }
+    }
+
+
+    private void TryPickup()
+    {
+        if (!_isPlayerInRange) return;
         if (inventory.TryAdd(itemData))
         {
-            Debug.Log("Add Item to inventory");
-            //UI_Prompt.Hide();
+            //UI_Prompt.Hide();\
+            InputManager.Instance.OnInteractKeyPressed -= TryPickup;
             Destroy(gameObject);
         }
         else
