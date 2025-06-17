@@ -3,19 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Tool : MonoBehaviour
-{
-    public float actionDuration = 1.0f;
+using UnityEngine;
+using System;
 
-    public void StartUse(GameObject target, Action onComplete)
+public class Tool : MonoBehaviour
+{
+    [SerializeField] private Highlighter highlighter;
+    public event Action OnToolClicked;
+
+    private bool isActive = false;
+
+    public void Highlight()
     {
-        StartCoroutine(Use(target, onComplete));
+        isActive = true;
+        highlighter.Highlight();
     }
 
-    protected virtual IEnumerator Use(GameObject target, Action onComplete)
+    public void Unhighlight()
     {
-        //тут типа анимация
-        yield return new WaitForSeconds(actionDuration);
-        onComplete?.Invoke();
+        isActive = false;
+        highlighter.Unhighlight();
+    }
+
+    private void OnMouseDown()
+    {
+        Debug.Log("GrindTool");
+        if (!isActive) return;
+        OnToolClicked?.Invoke();
     }
 }
+

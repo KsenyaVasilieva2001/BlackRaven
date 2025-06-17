@@ -123,6 +123,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &18330129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 18330130}
+  m_Layer: 0
+  m_Name: point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &18330130
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 18330129}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.05, y: 0.202, z: 0.087}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 543450651642699051}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &25875149
 GameObject:
   m_ObjectHideFlags: 0
@@ -606,7 +637,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 954cac638b1348346bb83ca0abf0cb2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grindingTool: {fileID: 0}
+  plates:
+  - {fileID: 409617687}
+  - {fileID: 1301055684}
+  - {fileID: 3206299761731302126}
+  grindingTool: {fileID: 919132147991594899}
+  manager: {fileID: 1889167695}
 --- !u!114 &334826829 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2769266850487173195, guid: 17e41ab6236ffe741abd3243113578a4, type: 3}
@@ -857,8 +893,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.59630644, y: 0.30913505, z: 0.53423804}
-  m_Center: {x: -0.060474146, y: 0.123085134, z: -0.042400315}
+  m_Size: {x: 0.53733796, y: 0.30913505, z: 0.46268544}
+  m_Center: {x: -0.030989882, y: 0.123085134, z: -0.07817663}
 --- !u!114 &355571892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8206,6 +8242,7 @@ Transform:
   m_Children:
   - {fileID: 1858077740672072780}
   - {fileID: 4592400099957382127}
+  - {fileID: 18330130}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8238,6 +8275,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 543450651642699051}
+  - component: {fileID: 919132147991594899}
+  - component: {fileID: 919132147991594900}
   m_Layer: 0
   m_Name: mashing_pot
   m_TagString: Untagged
@@ -8245,6 +8284,44 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &919132147991594899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132147991594897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb3463fa945bc24aaf289bad0e3a67c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlighter: {fileID: 8753503399769285368}
+  grinder: {fileID: 6483864432299651081}
+  grindPoint: {fileID: 18330130}
+  duration: 1.5
+  moveRadius: 0.05
+--- !u!65 &919132147991594900
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132147991594897}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.18625508, y: 0.2747106, z: 0.218288}
+  m_Center: {x: -0.049834132, y: 0.12802939, z: 0.10156531}
 --- !u!4 &1858077740672072780
 Transform:
   m_ObjectHideFlags: 0
@@ -8391,7 +8468,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6483864432299651081}
   m_LocalRotation: {x: 0.13846478, y: 0.9059155, z: -0.06046349, w: 0.3955866}
-  m_LocalPosition: {x: -0.107, y: 0.121, z: 0.076}
+  m_LocalPosition: {x: -0.057, y: 0.106, z: 0.107}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9416,6 +9493,7 @@ GameObject:
   - component: {fileID: 1858077740672072780}
   - component: {fileID: 5641318320635210854}
   - component: {fileID: 6546428552388978448}
+  - component: {fileID: 8753503399769285368}
   m_Layer: 0
   m_Name: pot
   m_TagString: Untagged
@@ -9423,3 +9501,16 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8753503399769285368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8753503399769285367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e902cd426af9ec4ab10024612636cda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightMaterial: {fileID: 2100000, guid: b32ad55eebc56f5409f1c2fce33de3bc, type: 2}

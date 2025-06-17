@@ -41,6 +41,7 @@ public abstract class MiniGameManager : MonoBehaviour
 
     public void ActivateStep(int idx)
     {
+        Debug.Log("Activate Step");
         if (idx < stepsInOrder.Count)
         {
             currentIndex = idx;
@@ -51,7 +52,9 @@ public abstract class MiniGameManager : MonoBehaviour
 
     public void NextStep()
     {
+        Debug.Log("Next step");
         var old = stepsInOrder[currentIndex];
+        Debug.Log("Old: " + old.name);
         old.Exit();
         old.gameObject.SetActive(false);
 

@@ -6,7 +6,7 @@ public class IngredientPlacementStep : MiniGameStep
 {
     [Header("Тарелки")]
     [SerializeField] private List<Plate> plates;
-    [SerializeField] private HairDyeMiniGameManager manager;
+    [SerializeField] private new HairDyeMiniGameManager manager;
 
     public int placedCount = 0;
 
@@ -29,10 +29,8 @@ public class IngredientPlacementStep : MiniGameStep
             GameObject.Destroy(itemGO);
             return;
         }
-
-        plate.Accept(itemGO);
         placedCount++;
-        
+        plate.Accept(itemGO);  
         for(int i = 0; i < manager.inventoryViews.Count; i++)
         {
             manager.inventoryViews[i].TryRemove(itemData);

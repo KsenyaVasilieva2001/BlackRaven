@@ -5,12 +5,30 @@ using UnityEngine;
 
 public class GrindingTool : Tool
 {
-    protected override IEnumerator Use(GameObject target, Action onComplete)
+    [SerializeField] private GameObject grinder;
+    [SerializeField] private Transform grindPoint;
+    [SerializeField] private float duration = 3f;
+    [SerializeField] private float moveRadius= 0.5f;
+    public void ProcessItem(Action onComplete)
     {
-        Debug.Log("Grind with pusher");
-        // Анимация перемешивания
-        yield return new WaitForSeconds(actionDuration);
-        Debug.Log("Mixing complete");
+        StartCoroutine(GrindAnimation(onComplete));
+    }
+
+    private IEnumerator GrindAnimation(System.Action onComplete)
+    {
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+
+            // Пример простого кругового движения
+            float angle = timer * Mathf.PI * 4f; // скорость
+            Vector3 offset = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * moveRadius;
+            grinder.transform.position = grindPoint.position + offset;
+
+            yield return null;
+        }
         onComplete?.Invoke();
     }
 }

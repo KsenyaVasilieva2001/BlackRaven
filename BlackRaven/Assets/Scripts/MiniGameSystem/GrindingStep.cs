@@ -4,32 +4,70 @@ using UnityEngine;
 
 public class GrindingStep : MiniGameStep
 {
+    [SerializeField] private List<Plate> plates;
+    [SerializeField] private GrindingTool grindingTool;
+    [SerializeField] private new HairDyeMiniGameManager manager;
+
+    private Plate selectedPlate;
+    private PickableItem selectedItem;
     private int processed = 0;
-  //  [SerializeField] private MortarSlot mortarSlot; // это что-то куда можно что-то класть, можно объединить с тарелкой
-   // [SerializeField] private BowlSlot bowlSlot;
-    [SerializeField] private Tool grindingTool;
+
     public GrindingStep(MiniGameManager mgr) : base(mgr) { }
+
     public override void Enter()
     {
-      //  mortarSlot.EnableReception();
+        Plate.OnPlateMouseDown += OnPlateClicked;
+        grindingTool.OnToolClicked += OnToolClicked;
     }
-    public override void HandleItem(GameObject item, IItemSlot slot)
-    {
-        /*
-        mortarSlot.Accept(item);
-        grindingTool.StartUse(item, () =>
-        {
-            bowlSlot.Accept(item);
-            processed++;
-            if (processed < 3)
-                mortarSlot.EnableReception();
-            else
-                manager.NextStep();
-        });
-        */
-    }
+
     public override void Exit()
     {
-       // mortarSlot.DisableReception();
+        Plate.OnPlateMouseDown -= OnPlateClicked;
+        grindingTool.OnToolClicked -= OnToolClicked;
+        grindingTool.Unhighlight(); 
+    }
+
+    private void OnPlateClicked(Plate plate, PickableItem item)
+    {
+        if (selectedPlate != null || !plate.IsFilled) return;
+
+        selectedPlate = plate;
+        selectedItem = item;
+        grindingTool.Highlight();
+    }
+
+    private void OnToolClicked()
+    {
+        if (selectedPlate == null || selectedItem == null) return;
+
+        /*
+        GameObject.Destroy(selectedItem.gameObject); // удаляем предмет с тарелки
+        selectedPlate.IsFilled = false;
+        selectedPlate = null;
+        selectedItem = null;
+        grindingTool.Unhighlight();
+        processed++;
+        if (processed >= plates.Count)
+        {
+            manager.NextStep();
+        }
+        */
+        grindingTool.ProcessItem(() => {
+            GameObject.Destroy(selectedItem.gameObject);
+            selectedPlate.IsFilled = false;
+            selectedPlate = null;
+            selectedItem = null;
+            grindingTool.Unhighlight();
+            processed++;
+            if (processed >= plates.Count)
+            {
+                manager.NextStep();
+            }
+        });
+    }
+
+    public override void HandleItem(GameObject item, IItemSlot slot)
+    {
+        //перенести сюда потом
     }
 }
