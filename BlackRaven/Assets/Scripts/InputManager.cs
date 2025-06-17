@@ -39,12 +39,14 @@ public class InputManager : MonoBehaviour
             EnableOrDisablePlayer();
             ShowOrHidePlayer();
             OnUseTablePressed?.Invoke();
-            if (!HairDyeMiniGameManager.Instance.IsInit)
+            if (!GameManager.Instance.IsInit)
             {
+                GameManager.Instance.ActivateMiniGame();
                 HairDyeMiniGameManager.Instance.InitMiniGame();
             }
             else
             {
+                GameManager.Instance.DeactivateMiniGame();
                 HairDyeMiniGameManager.Instance.DisableMiniGame();
             }
         }
