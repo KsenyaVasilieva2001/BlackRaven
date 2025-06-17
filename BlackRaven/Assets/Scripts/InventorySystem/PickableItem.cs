@@ -8,7 +8,14 @@ public class PickableItem : MonoBehaviour
     public Item ItemData => itemData;
 
     public bool _isPlayerInRange;
-    [SerializeField] private Inventory inventory;
+    [SerializeField] List<Inventory> invetoryViews;
+
+    private ItemTooltip tooltip;
+
+    private void Start()
+    {
+        tooltip = GetComponent<ItemTooltip>();
+    }
 
 
     private void OnTriggerEnter(Collider other)
@@ -16,8 +23,9 @@ public class PickableItem : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _isPlayerInRange = true;
+            tooltip?.ShowTooltip();
             InputManager.Instance.OnInteractKeyPressed += TryPickup;
-            //UI_Prompt.Show("Нажмите [E], чтобы подобрать " + itemData.name);
+            
         }
     }
 
@@ -26,24 +34,23 @@ public class PickableItem : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _isPlayerInRange = false;
+            tooltip?.HideTooltip();
             InputManager.Instance.OnInteractKeyPressed -= TryPickup;
-            //UI_Prompt.Hide();
+            
         }
     }
-
 
     private void TryPickup()
     {
         if (!_isPlayerInRange) return;
-        if (inventory.TryAdd(itemData))
+        for(int i = 0; i < invetoryViews.Count; i++)
         {
-            //UI_Prompt.Hide();\
-            InputManager.Instance.OnInteractKeyPressed -= TryPickup;
-            Destroy(gameObject);
-        }
-        else
-        {
-            //UI_Prompt.Show("Инвентарь полон");
+            if (invetoryViews[i].TryAdd(itemData))
+            {
+                InputManager.Instance.OnInteractKeyPressed -= TryPickup;
+                Destroy(gameObject);
+                tooltip?.HideTooltip();
+            }
         }
     }
 }

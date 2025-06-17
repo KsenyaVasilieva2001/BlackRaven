@@ -18,16 +18,8 @@ public class Inventory : MonoBehaviour, IInventory
 
     void Start()
     {
-        InventorySlot[] foundSlots = transform.parent.GetComponentsInChildren<InventorySlot>(includeInactive: true);
+        InventorySlot[] foundSlots = GetComponentsInChildren<InventorySlot>(includeInactive: true);
         slots.AddRange(foundSlots);
-    }
-
-    public List<InventorySlot> FindAllSlotsInChildren(Transform parent)
-    {
-        List<InventorySlot> slots = new List<InventorySlot>();
-        InventorySlot[] foundSlots = parent.GetComponentsInChildren<InventorySlot>(includeInactive: true);
-        slots.AddRange(foundSlots);
-        return slots;
     }
 
     public bool TryAdd(Item item)

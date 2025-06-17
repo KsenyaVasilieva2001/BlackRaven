@@ -5,10 +5,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour, IInventorySlot, IPointerClickHandler
+public class InventorySlot : MonoBehaviour, IInventorySlot, IPointerClickHandler, IPointerDownHandler
 {
     [SerializeField] private Image iconImage;
-    //[SerializeField] private Image backgroundImage;
 
     public static event Action<InventorySlot> OnAnySlotSelected;
     public static event Action<Item> OnItemSelected;
@@ -19,9 +18,9 @@ public class InventorySlot : MonoBehaviour, IInventorySlot, IPointerClickHandler
     private Item item;
     private bool isSelected = false;
 
-    void Start()
+    void Awake()
     {
-        iconImage = GetComponent<Image>();
+        iconImage = GetComponentInChildren<Image>();
     }
     private void OnEnable()
     {
@@ -89,5 +88,13 @@ public class InventorySlot : MonoBehaviour, IInventorySlot, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         ChooseItem();
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (item == null || item.Prefab == null) return;
+
+        var worldItem = Instantiate(item.Prefab);
+        DragItem.Instance.BeginDrag(worldItem, item);
     }
 }

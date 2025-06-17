@@ -11,9 +11,11 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager Instance { get; private set; }
     public event Action OnInteractKeyPressed;
+    public event Action OnUseTablePressed;
 
 
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private Inventory inventory;
     [SerializeField] private ThirdPersonCamera camera;
     
     [SerializeField] private KeyCode useTable = KeyCode.F;
@@ -34,11 +36,22 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(useTable))
         {
             CameraSwitch.Instance.SwitchCamera();
+            EnableOrDisablePlayer();
+            ShowOrHidePlayer();
+            OnUseTablePressed?.Invoke();
+            if (!HairDyeMiniGameManager.Instance.IsInit)
+            {
+                HairDyeMiniGameManager.Instance.InitMiniGame();
+            }
+            else
+            {
+                HairDyeMiniGameManager.Instance.DisableMiniGame();
+            }
         }
         if (Input.GetKeyDown(showInventory))
         {
-            Inventory.Instance.ShowOrHideInventory();
-            EnableOrDisablePlayer();
+            inventory.ShowOrHideInventory();
+            EnableOrDisablePlayer(); //also move these methods to actions
         }
         if (Input.GetKeyDown(pickItem))
         {
@@ -55,4 +68,10 @@ public class InputManager : MonoBehaviour
         playerController.enabled = !playerController.enabled;
         camera.enabled = !camera.enabled;
     }
+
+    public void ShowOrHidePlayer()
+    {
+        playerController.gameObject.SetActive(!playerController.gameObject.active);
+    }
+    
 }

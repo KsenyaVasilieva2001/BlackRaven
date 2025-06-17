@@ -2,12 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MiniGameManager : MonoBehaviour
+public abstract class MiniGameManager : MonoBehaviour
 {
     public static MiniGameManager Instance { get; private set; }
     [SerializeField] private List<MiniGameStep> stepsInOrder;
     private int currentIndex = 0;
-
+    private bool isInit;
+    public bool IsInit
+    {
+        get => isInit;
+        set => isInit = value;
+    }
 
     void Awake()
     {
@@ -21,6 +26,10 @@ public class MiniGameManager : MonoBehaviour
         }
     }
 
+    public virtual void InitMiniGame() { }
+
+    public virtual void DisableMiniGame() { }
+
     void Start()
     {
         foreach (var step in stepsInOrder)
@@ -30,7 +39,7 @@ public class MiniGameManager : MonoBehaviour
         ActivateStep(0);
     }
 
-    private void ActivateStep(int idx)
+    public void ActivateStep(int idx)
     {
         if (idx < stepsInOrder.Count)
         {

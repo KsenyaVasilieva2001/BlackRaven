@@ -6,12 +6,11 @@ public class PlayerRotation : MonoBehaviour
 {
     [SerializeField] private float turnSpeed = 10f;
     private PlayerInput input;
-    private Transform playerCameraTransform;
+    [SerializeField] private Transform playerCameraTransform;
 
     void Awake()
     {
         input = GetComponent<PlayerInput>();
-        playerCameraTransform = Camera.main.transform;
     }
 
     public void Rotate()
