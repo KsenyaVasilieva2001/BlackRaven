@@ -6,46 +6,50 @@ public class IngredientPlacementStep : MiniGameStep
 {
     [Header("Тарелки")]
     [SerializeField] private List<Plate> plates;
+    [SerializeField] private HairDyeMiniGameManager manager;
 
-    private int placedCount = 0;
+    public int placedCount = 0;
 
-    public IngredientPlacementStep(MiniGameManager mgr) : base(mgr) { }
+    public IngredientPlacementStep(HairDyeMiniGameManager mgr) : base(mgr) { }
 
     public override void Enter()
     {
         DragItem.Instance.OnDropAttempt += HandleDragDrop;
-        //plates.ForEach(p => p.EnableReception());
     }
 
     public override void Exit()
     {
         DragItem.Instance.OnDropAttempt -= HandleDragDrop;
-        //plates.ForEach(p => p.DisableReception());
     }
 
-    private void HandleDragDrop(GameObject itemGO, Item itemData)
+    private void HandleDragDrop(GameObject itemGO, Item itemData, Plate plate)
     {
-        Collider[] hits = Physics.OverlapSphere(itemGO.transform.position, 0.3f);
-
-        foreach (var col in hits)
+        if (!plate.CanAccept())
         {
-            var plate = col.GetComponent<Plate>();
-            if (plate != null && plate.CanAccept(itemData))
-            {
-                plate.Accept(itemGO);
-                HandleItem(itemGO, plate);
-                return;
-            }
+            GameObject.Destroy(itemGO);
+            return;
         }
 
-        // Если не попал — удалить или вернуть в инвентарь
-        UnityEngine.Object.Destroy(itemGO);
+        plate.Accept(itemGO);
+        placedCount++;
+        
+        for(int i = 0; i < manager.inventoryViews.Count; i++)
+        {
+            manager.inventoryViews[i].TryRemove(itemData);
+        }
+        //manager.Inventory.TryRemoveItem(itemData); // Удаляем из инвентаря
     }
 
     public override void HandleItem(GameObject item, IItemSlot slot)
     {
-        placedCount++;
         if (placedCount >= plates.Count)
-            manager.NextStep();
+        {
+            CompleteStep();
+        }
+    }
+
+    private void CompleteStep()
+    {
+        manager.NextStep();
     }
 }

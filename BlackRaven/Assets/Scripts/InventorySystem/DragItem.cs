@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DragItem : MonoBehaviour
@@ -11,11 +9,17 @@ public class DragItem : MonoBehaviour
     [SerializeField] private Item currentItem;
     [SerializeField] private Camera cam;
 
-    public event Action<GameObject, Item> OnDropAttempt;
+    public event Action<GameObject, Item, Plate> OnDropAttempt;
 
     private void Awake()
     {
         Instance = this;
+        Plate.OnItemEnteredPlate += HandleTriggerDrop;
+    }
+
+    private void OnDestroy()
+    {
+        Plate.OnItemEnteredPlate -= HandleTriggerDrop;
     }
 
     public void BeginDrag(GameObject obj, Item item)
@@ -33,35 +37,17 @@ public class DragItem : MonoBehaviour
         {
             draggingObject.transform.position = hit.point;
         }
-        if (Input.GetMouseButtonUp(0))
-        {
-            TryDrop();
-        }
+
+        // ”бираем mouseUp Ч всЄ делаетс€ через Trigger
     }
 
-    private void TryDrop()
+    private void HandleTriggerDrop(Plate plate, PickableItem pickable)
     {
+        if (draggingObject == null || pickable.gameObject != draggingObject)
+            return;
 
-        /*
-        if (draggingObject == null) return;
-        Ray rayDown = new Ray(draggingObject.transform.position + Vector3.up * 0.1f, Vector3.down);
-        if (Physics.Raycast(rayDown, out RaycastHit hit, 2f))
-        {
-            var slot = hit.collider.GetComponent<IItemSlot>();
-            if (slot != null && slot.CanAccept(currentItem))
-            {
-                slot.Accept(draggingObject);
-                draggingObject = null;
-                currentItem = null;
-                return;
-            }
-        }
-
-        // ≈сли не попали Ч вернуть или уничтожить предмет
-        Destroy(draggingObject); // или Pool.Return(), если используешь пул
+        OnDropAttempt?.Invoke(draggingObject, currentItem, plate);
         draggingObject = null;
         currentItem = null;
-        */
     }
-
 }

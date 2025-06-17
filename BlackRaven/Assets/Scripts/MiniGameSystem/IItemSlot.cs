@@ -7,6 +7,6 @@ using UnityEngine;
  */
 public interface IItemSlot
 {
-    bool CanAccept(Item item);
+    bool CanAccept();
     void Accept(GameObject itemInstance);
 }

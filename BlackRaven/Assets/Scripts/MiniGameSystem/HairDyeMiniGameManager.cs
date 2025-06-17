@@ -5,6 +5,8 @@ using UnityEngine;
 public class HairDyeMiniGameManager : MiniGameManager
 {
     [SerializeField] private GameObject inventoryPanel;
+    [SerializeField] public List<Inventory> inventoryViews;
+
 
     public override void InitMiniGame()
     {

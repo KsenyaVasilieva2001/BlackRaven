@@ -20,7 +20,7 @@ public class InventorySlot : MonoBehaviour, IInventorySlot, IPointerClickHandler
 
     void Awake()
     {
-        iconImage = GetComponentInChildren<Image>();
+        iconImage = GetComponentsInChildren<Image>()[1];
     }
     private void OnEnable()
     {
@@ -40,14 +40,21 @@ public class InventorySlot : MonoBehaviour, IInventorySlot, IPointerClickHandler
     
     private void UpdateUI()
     {
+        Debug.Log("Update UI");
         if (item != null)
         {
             iconImage.sprite = item.Icon;
+            Color color = iconImage.color;
+            color.a = 1f;
+            iconImage.color = color;
             iconImage.enabled = true;
         }
         else
         {
             iconImage.sprite = null;
+            Color color = iconImage.color;
+            color.a = 0f;
+            iconImage.color = color;
             iconImage.enabled = false;
         }
     }
@@ -82,8 +89,14 @@ public class InventorySlot : MonoBehaviour, IInventorySlot, IPointerClickHandler
 
     private void UpdateSelectionVisual()
     {
-
+        
         iconImage.color = isSelected ? new Color(17, 255, 0) : Color.white;
+        if(StoredItem == null)
+        {
+            Color color = iconImage.color;
+            color.a = isSelected ? 1f : 0f;
+            iconImage.color = color;
+        }
     }
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -94,7 +107,10 @@ public class InventorySlot : MonoBehaviour, IInventorySlot, IPointerClickHandler
     {
         if (item == null || item.Prefab == null) return;
 
-        var worldItem = Instantiate(item.Prefab);
-        DragItem.Instance.BeginDrag(worldItem, item);
+        if (GameManager.Instance.IsAnyMiniGameIsOn())
+        {
+            var worldItem = Instantiate(item.Prefab);
+            DragItem.Instance.BeginDrag(worldItem, item);
+        }
     }
 }

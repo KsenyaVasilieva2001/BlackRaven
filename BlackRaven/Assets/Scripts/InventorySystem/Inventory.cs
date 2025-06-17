@@ -39,6 +39,24 @@ public class Inventory : MonoBehaviour, IInventory
         return removed;
     }
 
+    public Item TryRemove(Item item)
+    {
+        Debug.Log("Remove");
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (slots[i].StoredItem == item)
+            {
+                var removed = slots[i].RemoveItem();
+                if (removed != null)
+                {
+                    OnInventoryChanged?.Invoke();
+                    return removed;
+                }
+            }
+        }
+        return null;
+    }
+
     public void ShowOrHideInventory()
     {
         Debug.Log("Show");
