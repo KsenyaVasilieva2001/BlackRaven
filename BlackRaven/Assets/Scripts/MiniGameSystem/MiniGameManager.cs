@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,6 +49,15 @@ public abstract class MiniGameManager : MonoBehaviour
             stepsInOrder[idx].gameObject.SetActive(true);
             stepsInOrder[idx].Enter();
         }
+        else
+        {
+            Finish();
+        }
+    }
+
+    public virtual void Finish()
+    {
+        
     }
 
     public void NextStep()
@@ -57,7 +67,6 @@ public abstract class MiniGameManager : MonoBehaviour
         Debug.Log("Old: " + old.name);
         old.Exit();
         old.gameObject.SetActive(false);
-
         ActivateStep(currentIndex + 1);
     }
 

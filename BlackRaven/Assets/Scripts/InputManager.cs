@@ -71,6 +71,24 @@ public class InputManager : MonoBehaviour
         camera.enabled = !camera.enabled;
     }
 
+    public void UseTable()
+    {
+        CameraSwitch.Instance.SwitchCamera();
+        EnableOrDisablePlayer();
+        ShowOrHidePlayer();
+        OnUseTablePressed?.Invoke();
+        if (!GameManager.Instance.IsInit)
+        {
+            GameManager.Instance.ActivateMiniGame();
+            HairDyeMiniGameManager.Instance.InitMiniGame();
+        }
+        else
+        {
+            GameManager.Instance.DeactivateMiniGame();
+            HairDyeMiniGameManager.Instance.DisableMiniGame();
+        }
+    }
+
     public void ShowOrHidePlayer()
     {
         playerController.gameObject.SetActive(!playerController.gameObject.active);

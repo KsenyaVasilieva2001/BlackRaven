@@ -31,6 +31,15 @@ public class Inventory : MonoBehaviour, IInventory
         return true;
     }
 
+    public bool TryAdd(Item item, ItemType type)
+    {
+        var slot = slots.FirstOrDefault(s => s.IsEmpty && s.StoredItem == null && s.requiredItemType == type);
+        if (slot == null) return false;
+        slot.AddItem(item);
+        OnInventoryChanged?.Invoke();
+        return true;
+    }
+
     public Item TryRemoveAt(int index)
     {
         if (index < 0 || index >= slots.Count) return null;

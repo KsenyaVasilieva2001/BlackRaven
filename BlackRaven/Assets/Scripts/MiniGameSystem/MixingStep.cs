@@ -1,29 +1,74 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class MixingStep : MiniGameStep 
+public class MixingStep : MiniGameStep
 {
-    [Header("Инструменты смешивания")]
-    //[SerializeField] private BowlSlot bowl;
-   // [SerializeField] private WaterJug waterJug;
-    [SerializeField] private Tool mixingTool;
-   // [SerializeField] private SpoonSlot spoon;
+    [SerializeField] private GrindingTool grindingTool;
+    [SerializeField] private CupTool cup;
+    [SerializeField] private PitcherTool pitcher;
+    [SerializeField] private new HairDyeMiniGameManager manager;
+
+    public enum StepState { WaitingForGrind, WaitingForPitcher, Done }
+    public StepState currentState = StepState.WaitingForGrind;
 
     public MixingStep(MiniGameManager mgr) : base(mgr) { }
+
     public override void Enter()
     {
-      //  waterJug.EnablePouring();
-       // spoon.EnableReception();
-    }
-    public override void HandleItem(GameObject item, IItemSlot slot)
-    {
-        // логика приёма воды/ложки и вызов mixingTool.Use()
+        grindingTool.OnToolClicked += OnGrindingToolClicked;
+        pitcher.OnToolClicked += OnPitcherClicked;
+        cup.OnToolClicked += OnCupClicked;
+
+        grindingTool.isActive = true;
+        cup.Unhighlight();
     }
 
     public override void Exit()
     {
-      //  waterJug.DisablePouring();
-       // spoon.DisableReception();
+        grindingTool.OnToolClicked -= OnGrindingToolClicked;
+        pitcher.OnToolClicked -= OnPitcherClicked;
+        cup.OnToolClicked -= OnCupClicked;
+    }
+
+    private void OnGrindingToolClicked()
+    {
+        Debug.Log("Clicked on grind");
+        if (currentState != StepState.WaitingForGrind) return;
+        cup.Highlight();
+    }
+
+    private void OnPitcherClicked()
+    {
+        if (currentState != StepState.WaitingForPitcher) return;
+        cup.Highlight();
+    }
+
+    private void OnCupClicked()
+    {
+        if (currentState == StepState.WaitingForGrind)
+        {
+            cup.Unhighlight();
+            grindingTool.PlayPourAnimation(() =>
+            {
+                currentState = StepState.WaitingForPitcher;
+                pitcher.isActive = true;
+            });
+        }
+        else if (currentState == StepState.WaitingForPitcher)
+        {
+            cup.Unhighlight();
+            cup.isActive = true;
+            pitcher.PlayPourAnimation(() =>
+            {
+                currentState = StepState.Done;
+                manager.NextStep();
+            });
+        }
+    }
+
+    public override void HandleItem(GameObject item, IItemSlot slot)
+    {
+        throw new NotImplementedException();
     }
 }

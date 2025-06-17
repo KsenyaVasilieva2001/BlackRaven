@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemType { Weapon, Ingredient }
+public enum ItemType { Recipe, Ingredient }
 
 [CreateAssetMenu(menuName = "Alchemy/Item")]
 public class Item : ScriptableObject

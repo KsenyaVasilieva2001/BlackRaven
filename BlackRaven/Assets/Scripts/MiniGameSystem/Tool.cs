@@ -11,7 +11,7 @@ public class Tool : MonoBehaviour
     [SerializeField] private Highlighter highlighter;
     public event Action OnToolClicked;
 
-    private bool isActive = false;
+    public bool isActive = false;
 
     public void Highlight()
     {
@@ -27,7 +27,6 @@ public class Tool : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log("GrindTool");
         if (!isActive) return;
         OnToolClicked?.Invoke();
     }
