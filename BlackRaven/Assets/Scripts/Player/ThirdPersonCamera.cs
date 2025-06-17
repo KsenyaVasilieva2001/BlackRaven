@@ -1,30 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ThirdPersonCamera : MonoBehaviour
 {
     [SerializeField] private Transform target;
-    [SerializeField] private Vector3 offset = new Vector3(0, 3, -6);
+    [SerializeField] private float distance = 6f;
+    [SerializeField] private Vector2 offset = new Vector2(0, 3f); // (X = вправо/влево, Y = вверх)
     [SerializeField] private float rotationSpeed = 5f;
-
-    [SerializeField] private float minAngle = 0f;
-    [SerializeField] private float maxAngle = 60f;
-
+    [SerializeField] private float minPitch = -30f;
+    [SerializeField] private float maxPitch = 60f;
 
     private float yaw;
-    private float angle;
+    private float pitch;
 
     void LateUpdate()
     {
         yaw += Input.GetAxis("Mouse X") * rotationSpeed;
-        angle -= Input.GetAxis("Mouse Y") * rotationSpeed;
-        angle = Mathf.Clamp(angle, minAngle, maxAngle);
+        pitch -= Input.GetAxis("Mouse Y") * rotationSpeed;
+        pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
-        Quaternion rotation = Quaternion.Euler(angle, yaw, 0);
-        Vector3 desiredPosition = target.position + rotation * offset;
+        Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
+
+        // ѕозици€ камеры относительно цели на заданном рассто€нии
+        Vector3 direction = rotation * new Vector3(0, 0, -distance);
+        Vector3 desiredPosition = target.position + Vector3.up * offset.y + Vector3.right * offset.x + direction;
 
         transform.position = desiredPosition;
-        transform.LookAt(target.position + Vector3.up * 1.5f);
+        transform.LookAt(target.position + Vector3.up * offset.y);
     }
 }
