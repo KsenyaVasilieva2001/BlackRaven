@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HairDye
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 7999cf9f7ff175a48b64c6cbd03c5be8, type: 3}
-  prefab: {fileID: 3223444377766077781, guid: ae6d7fd6e97305c42bff75a9ebd60880, type: 3}
+  prefab: {fileID: 3308826287975748931, guid: 04c2c53699f7ac24899347113a24446a, type: 3}
   title: "\u043A\u0440\u0430\u0441\u043A\u0430 \u0434\u043B\u044F \u0432\u043E\u043B\u043E\u0441"
   description: "\u0427\u0435\u0440\u043D\u0430\u044F \u043A\u0440\u0430\u0441\u043A\u0430
     \u0434\u043B\u044F \u0432\u043E\u043B\u043E\u0441"

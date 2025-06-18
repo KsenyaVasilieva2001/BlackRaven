@@ -15,7 +15,7 @@ public class CameraSwitch : MonoBehaviour
         Instance = this;
     }
 
-    public void SwitchCamera()
+    public void SwitchCamera(Camera otherCamera)
     {
         isPlayerCameraActive = !isPlayerCameraActive;
         playerCamera.enabled = isPlayerCameraActive;

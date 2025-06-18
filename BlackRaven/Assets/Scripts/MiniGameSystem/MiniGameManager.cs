@@ -5,27 +5,16 @@ using UnityEngine;
 
 public abstract class MiniGameManager : MonoBehaviour
 {
-    public static MiniGameManager Instance { get; private set; }
     [SerializeField] private List<MiniGameStep> stepsInOrder;
     private int currentIndex = 0;
     private bool isInit;
+    public bool IsFinished;
     public bool IsInit
     {
         get => isInit;
         set => isInit = value;
     }
 
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     public virtual void InitMiniGame() { }
 

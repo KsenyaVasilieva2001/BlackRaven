@@ -42,6 +42,7 @@ public class IngredientPlacementStep : MiniGameStep
     {
         if (placedCount >= plates.Count)
         {
+            DragItem.Instance.enabled = false;
             CompleteStep();
         }
     }

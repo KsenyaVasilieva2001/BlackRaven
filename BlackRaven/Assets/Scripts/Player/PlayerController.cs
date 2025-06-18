@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerInput), typeof(PlayerMovement), typeof(PlayerRotation))]
 public class PlayerController : MonoBehaviour
 {
+    public Collider currentTrigger { get; private set; }
     private PlayerMovement movement;
     private PlayerRotation rotation;
 
@@ -19,5 +20,22 @@ public class PlayerController : MonoBehaviour
         movement.Move();
         rotation.Rotate();
     }
-   
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.isTrigger)
+        {
+            currentTrigger = other;
+            Debug.Log(other);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other == currentTrigger)
+        {
+            currentTrigger = null;
+        }
+    }
+
 }

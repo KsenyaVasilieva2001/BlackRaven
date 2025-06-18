@@ -9,11 +9,13 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController characterController;
     [SerializeField] private Transform playerCameraTransform;
     private PlayerInput input;
+    [SerializeField] private Animator animator;
 
     void Awake()
     {
         characterController = GetComponent<CharacterController>();
         input = GetComponent<PlayerInput>();
+        animator = GetComponent<Animator>();
     }
     public void Move()
     {
@@ -22,5 +24,12 @@ public class PlayerMovement : MonoBehaviour
         move.y = 0;
 
         characterController.Move(move.normalized * moveSpeed * Time.deltaTime);
+
+        Vector3 pos = transform.position;
+        pos.y = 0;
+        transform.position = pos;
+
+        float speed = move.magnitude;
+        animator.SetFloat("Speed", speed);
     }
 }

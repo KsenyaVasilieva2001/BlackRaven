@@ -7,6 +7,7 @@ public class Plate : MonoBehaviour, IItemSlot
 {
     [SerializeField] private Transform dropPoint;
     [SerializeField] private Highlighter highlighter;
+    [SerializeField] private HairDyeMiniGameManager manager;
     public bool IsFilled;
     public static event Action<Plate, PickableItem> OnItemEnteredPlate;
     public static event Action<Plate, PickableItem> OnPlateMouseDown;
@@ -18,7 +19,7 @@ public class Plate : MonoBehaviour, IItemSlot
         itemInstance.transform.SetParent(dropPoint);
         itemInstance.transform.localPosition = Vector3.zero;
         itemInstance.GetComponent<Collider>().enabled = false;
-        MiniGameManager.Instance.OnItemDropped(itemInstance, this);
+        manager.OnItemDropped(itemInstance, this);
         IsFilled = true;
         highlighter.Unhighlight();
     }

@@ -59,14 +59,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7066270169294342091}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 10.503001, y: 2.0866003, z: -20.506}
-  m_LocalScale: {x: 0.010269939, y: 0.010269939, z: 0.010269939}
+  m_LocalScale: {x: 0.0067296857, y: 0.0067296857, z: 0.0067296857}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3269161233269218760}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 32
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &921472265294239015
 MeshFilter:
@@ -132,6 +132,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dropPoint: {fileID: 3269161233269218760}
   highlighter: {fileID: 4156162107958727616}
+  manager: {fileID: 0}
+  IsFilled: 0
 --- !u!65 &4324765260624326596
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -10,16 +10,19 @@ public class DragItem : MonoBehaviour
     [SerializeField] private Camera cam;
 
     public event Action<GameObject, Item, Plate> OnDropAttempt;
+    public event Action<GameObject, Item, PlayerColor> OnDropAttemptPlayer;
 
     private void Awake()
     {
         Instance = this;
         Plate.OnItemEnteredPlate += HandleTriggerDrop;
+        PlayerColor.OnItemEnteredPlayer += HandleTriggerDropPlayer;
     }
 
     private void OnDestroy()
     {
         Plate.OnItemEnteredPlate -= HandleTriggerDrop;
+        PlayerColor.OnItemEnteredPlayer -= HandleTriggerDropPlayer;
     }
 
     public void BeginDrag(GameObject obj, Item item)
@@ -49,5 +52,17 @@ public class DragItem : MonoBehaviour
         OnDropAttempt?.Invoke(draggingObject, currentItem, plate);
         draggingObject = null;
         currentItem = null;
+    }
+
+    private void HandleTriggerDropPlayer(PlayerColor player, PickableItem pickable)
+    {
+        OnDropAttemptPlayer?.Invoke(draggingObject, currentItem, player);
+        draggingObject = null;
+        currentItem = null;
+    }
+
+    public void SetCamera(Camera camera)
+    {
+        cam = camera;
     }
 }

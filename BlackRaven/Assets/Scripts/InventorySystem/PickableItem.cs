@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PickableItem : MonoBehaviour
 {
     [SerializeField] private Item itemData;
+    private bool _isSubscribed = false;
     public Item ItemData => itemData;
 
     public bool _isPlayerInRange;
@@ -15,6 +17,10 @@ public class PickableItem : MonoBehaviour
     private void Start()
     {
         tooltip = GetComponent<ItemTooltip>();
+        if (invetoryViews == null || invetoryViews.Count == 0)
+        {
+            invetoryViews = FindObjectsOfType<Inventory>().ToList();
+        }
     }
 
 
@@ -24,8 +30,11 @@ public class PickableItem : MonoBehaviour
         {
             _isPlayerInRange = true;
             tooltip?.ShowTooltip();
-            InputManager.Instance.OnInteractKeyPressed += TryPickup;
-            
+            if (!_isSubscribed)
+            {
+                InputManager.Instance.OnInteractKeyPressed += TryPickup;
+                _isSubscribed = true;
+            }  
         }
     }
 
@@ -35,14 +44,19 @@ public class PickableItem : MonoBehaviour
         {
             _isPlayerInRange = false;
             tooltip?.HideTooltip();
-            InputManager.Instance.OnInteractKeyPressed -= TryPickup;
-            
+            if (_isSubscribed)
+            {
+                InputManager.Instance.OnInteractKeyPressed -= TryPickup;
+                _isSubscribed = false;
+            }
+
         }
     }
 
     private void TryPickup()
     {
         if (!_isPlayerInRange) return;
+        Debug.Log("Pick");
         for(int i = 0; i < invetoryViews.Count; i++)
         {
             if (invetoryViews[i].TryAdd(itemData))

@@ -8,6 +8,7 @@ public class HairDyeMiniGameManager : MiniGameManager
     [SerializeField] public List<Inventory> inventoryViews;
     [SerializeField] private Item resultItem;
     [SerializeField] private GameObject resultPanel;
+    [SerializeField] private GameObject mirrorTooltip;
 
     public override void InitMiniGame()
     {
@@ -30,5 +31,6 @@ public class HairDyeMiniGameManager : MiniGameManager
                 resultPanel.SetActive(true);
             }
         }
+        mirrorTooltip.SetActive(true);
     }
 }

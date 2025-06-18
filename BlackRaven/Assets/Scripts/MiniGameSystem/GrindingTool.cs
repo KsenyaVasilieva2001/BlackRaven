@@ -40,8 +40,9 @@ public class GrindingTool : Tool
 
     private IEnumerator PourRoutine(Action onComplete)
     {
-        transform.position += new Vector3(0f, 1f, 0f); 
-        transform.rotation = Quaternion.Euler(0f, 0f, 90f);
+        grinder.gameObject.SetActive(false);
+        transform.position += new Vector3(0f, 0.6f, 0f); 
+        transform.rotation = Quaternion.Euler(0f, 0f, -90f);
         float duration = 1.5f;
         float timer = 0f;
         Vector3 start = transform.position;
@@ -54,8 +55,9 @@ public class GrindingTool : Tool
             yield return null;
         }
 
-        transform.position -= new Vector3(0f, 1f, 0f);
+        transform.position -= new Vector3(0f, 0.6f, 0f);
         transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        grinder.gameObject.SetActive(true);
         onComplete?.Invoke();
     } 
 }
